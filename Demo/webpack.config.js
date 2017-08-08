@@ -11,7 +11,8 @@ module.exports = {
     inline:true
   },
   module: {
-    rules: [{
+    rules: [
+      {
       test: /\.js?$/,
       exclude: /(node_modules)/,
       use: [{
@@ -20,8 +21,17 @@ module.exports = {
           presets: ['react', 'es2015']
         }
       }]
-
-    }]
+    },
+    {
+       test: /\.css$/,
+       use: [
+         { loader: "style-loader" },
+         { loader: "css-loader" ,
+          options: {modules:true }
+          }
+       ]
+     }
+  ]
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
