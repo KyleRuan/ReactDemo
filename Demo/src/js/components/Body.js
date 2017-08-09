@@ -1,6 +1,7 @@
 import React from 'react';
 import BodyChild from './BodyChild';
 import PropTypes from 'prop-types';
+import { DatePicker } from 'antd';
 class Body extends React.Component {
   constructor() {
     super();
@@ -29,7 +30,7 @@ class Body extends React.Component {
         <p>我要开始测试了</p>
         <div>
           <p>首先是State</p>
-           <p>时间是：{this.state.time}</p>
+           <p>时间是： {this.state.time}</p>
            <input type="button" value="按钮" onClick={this.addTime.bind(this)}/>
         </div>
         <div>
@@ -47,7 +48,9 @@ class Body extends React.Component {
           <p>Refs</p>
           <input type="button" value="改颜色" ref="changeButton" onClick={this.changeColor.bind(this)}/>
         </div>
-
+        <div>
+          <DatePicker/>
+        </div>
       </div>
     );
   }

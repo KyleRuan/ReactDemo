@@ -4,7 +4,7 @@ var path = require('path');
 
 module.exports = {
   devtool: "inline-source-map", //在debug的时候打开可以定位错误
-  entry: "./src/js/index.js",
+  entry: "./src/js/root.js",
   devServer:{
     historyApiFallback:true,
     hot:true,
