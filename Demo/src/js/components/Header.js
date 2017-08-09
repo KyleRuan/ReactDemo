@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 // import {} from '../../css/Header.css';
 const HeaderCss = require('../../css/Header.css');
 export default class Header extends React.Component {
@@ -19,8 +20,13 @@ export default class Header extends React.Component {
     return (
 
       <div className={HeaderCss.header}>
-        <h1> 我是头部 </h1>
-        <p style={footerConvertStyle.miniFooter}>头部好厉害</p>
+        <h1 style={footerConvertStyle.miniFooter}>我是头部</h1>
+        <ul>
+          <li><Link to={`/`}>首页</Link></li>
+          <Link to="/list/1234">走到下一页 </Link>
+          <li><Link to='/detail'>嵌套的详情页面</Link></li>
+        </ul>
+
       </div>
 
     )
