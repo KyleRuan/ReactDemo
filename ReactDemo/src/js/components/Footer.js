@@ -1,10 +1,17 @@
 import React from 'react';
+import {Row,Col} from 'antd'
 class Footer extends React.Component {
   render() {
     return (
-      <div className="header">
-        <h1> 我是尾部信息</h1>
-      </div>
+      <footer>
+        <Row>
+          <Col span={2}/>
+          <Col span={20} className="footer">
+            <span>&copy;&nbsp;2017 ReactNews. All Rights Reserved.</span>
+          </Col>
+          <Col span={2}/>
+        </Row>
+      </footer>
     );
 
   }

@@ -1,0 +1,26 @@
+.logo {
+    align-items: center;
+    display: flex;
+}
+
+.logo span {
+    font-size: 24px;
+    padding-left: 5px;
+}
+.logo img{
+    width: 48px;
+    height: 48px;
+}
+
+
+/*footer*/
+.footer {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    text-align: center;
+}
+
+.footer span {
+    font-size: 26px;
+}

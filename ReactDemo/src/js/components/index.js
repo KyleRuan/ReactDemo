@@ -1,7 +1,8 @@
 import React from 'react';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import Body from './components/Body';
+import Footer from './Footer';
+import Header from './Header';
+import Body from './Body';
+
 export default class Index extends React.Component {
   render() {
     return (
