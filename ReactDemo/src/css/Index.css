@@ -24,3 +24,8 @@
 .footer span {
     font-size: 26px;
 }
+
+/*浮动脱离*/
+.register {
+    float: right !important;
+}

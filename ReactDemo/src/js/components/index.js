@@ -8,7 +8,7 @@ export default class Index extends React.Component {
     return (
       <div >
         <Header/>
-        <Body username={"kyle"} />
+        <Body />
         <Footer/>
       </div>
     )
