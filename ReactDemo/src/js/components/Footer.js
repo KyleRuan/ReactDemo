@@ -1,7 +1,6 @@
 import React from 'react';
 import {Row,Col} from 'antd'
-class Footer extends React.Component {
-  render() {
+const Footer = function () {
     return (
       <footer>
         <Row>
@@ -13,7 +12,5 @@ class Footer extends React.Component {
         </Row>
       </footer>
     );
-
-  }
 }
 export default Footer;
