@@ -25,7 +25,21 @@
     font-size: 26px;
 }
 
-/*浮动脱离*/
-.register {
-    float: right !important;
+#registerButton {
+    width: 120px;
+}
+
+.registerHref {
+    margin-top: 8px;
+    padding-top: 2px;
+}
+
+.login-form {
+    max-width: 300px;
+}
+.login-form-forgot {
+    float: right;
+}
+.login-form-button {
+    width: 100%;
 }
