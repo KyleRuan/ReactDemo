@@ -1,188 +1,150 @@
-import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd';
+import { Form, Input, Icon, Checkbox, Button ,Tooltip} from 'antd';
 const FormItem = Form.Item;
-const Option = Select.Option;
-const AutoCompleteOption = AutoComplete.Option;
 import React from 'react';
 
 class RegistrationForm extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      confirmDirty: false
+    };
+  }
 
-    constructor() {
-        super()
-        this.state = {
-            confirmDirty: false
-        };
+  handleSubmit(e) {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err &&values.agreement) {
+        console.log('Received values of form: ', values);
+      } else if(!values.agreement) {
+        console.log("必须同意协议");
+      }
+    });
+  }
+  handleConfirmBlur(e) {
+    const value = e.target.value;
+    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+  }
+  checkPassword (rule, value, callback) {
+    const form = this.props.form;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('两次输入的密码不一致');
+    } else {
+      callback();
     }
+  }
+  checkConfirm(rule, value, callback) {
+    const form = this.props.form;
+    if (value && this.state.confirmDirty) {
+      form.validateFields(['confirm'], { force: true });
+    }
+    callback();
+  }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        this.props.form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
+  render() {
+    const {getFieldDecorator}  = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 6 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 14 },
+      },
+    };
+    const tailFormItemLayout = {
+      wrapperCol: {
+        xs: {
+          span: 24,
+          offset: 0,
+        },
+        sm: {
+          span: 14,
+          offset: 6,
+        },
+      },
+    };
+    return(
+      <Form onSubmit={this.handleSubmit.bind(this)}>
+        <FormItem  {...formItemLayout}
+                   label ="邮箱"
+                   hasFeedback>
+          {getFieldDecorator('email',{
+            rules: [{
+              type:"email",message: '不合法的邮箱地址'
+            },{
+              required:true,message: '请输入你的邮箱'
+            }]
+          })(
+            <Input prefix={<Icon type="mail" />}  placeholder="邮箱地址"/>
+          )}
+        </FormItem>
+        <FormItem label="密码"
+                  hasFeedback
+                  {...formItemLayout}>
+          {getFieldDecorator('password',{
+            rules: [
+              {required:true , message:'请输入密码'},
+              {validator: this.checkConfirm.bind(this)}
+            ]
+          })(
+            <Input type="password" prefix={<Icon type="lock" />}  placeholder="请输入密码"/>
+          )}
+        </FormItem>
+        <FormItem {...formItemLayout}
+                  label="确认密码"
+                  hasFeedback>
+          {getFieldDecorator('confirm',{
+            rules: [{
+              required:true, message:"请确认密码"
+            },{
+              validator:this.checkPassword.bind(this)
             }
-        });
-    }
-    handleConfirmBlur(e) {
-        const value = e.target.value;
-        this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-    }
-    checkPassword (rule, value, callback) {
-        const form = this.props.form;
-        if (value && value !== form.getFieldValue('password')) {
-            callback('Two passwords that you enter is inconsistent!');
-        } else {
-            callback();
-        }
-    }
-    checkConfirm(rule, value, callback) {
-        const form = this.props.form;
-        if (value && this.state.confirmDirty) {
-            form.validateFields(['confirm'], { force: true });
-        }
-        callback();
-    }
-
-
-
-    render() {
-        const { getFieldDecorator } = this.props.form;
-
-        const formItemLayout = {
-            labelCol: {
-                xs: { span: 24 },
-                sm: { span: 6 },
-            },
-            wrapperCol: {
-                xs: { span: 24 },
-                sm: { span: 14 },
-            },
-        };
-        const tailFormItemLayout = {
-            wrapperCol: {
-                xs: {
-                    span: 24,
-                    offset: 0,
-                },
-                sm: {
-                    span: 14,
-                    offset: 6,
-                },
-            },
-        };
-        const prefixSelector = getFieldDecorator('prefix', {
-            initialValue: '86',
-        })(
-            <Select style={{ width: 60 }}>
-                <Option value="86">+86</Option>
-                <Option value="87">+87</Option>
-            </Select>
-        );
-
-        return (
-            <Form onSubmit={this.handleSubmit.bind(this)}>
-                <FormItem
-                    {...formItemLayout}
-                    label="E-mail"
-                    hasFeedback
-                >
-                    {getFieldDecorator('email', {
-                        rules: [{
-                            type: 'email', message: 'The input is not valid E-mail!',
-                        }, {
-                            required: true, message: 'Please input your E-mail!',
-                        }],
-                    })(
-                        <Input />
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="Password"
-                    hasFeedback
-                >
-                    {getFieldDecorator('password', {
-                        rules: [{
-                            required: true, message: 'Please input your password!',
-                        }, {
-                            validator: this.checkConfirm,
-                        }],
-                    })(
-                        <Input type="password" />
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="Confirm Password"
-                    hasFeedback
-                >
-                    {getFieldDecorator('confirm', {
-                        rules: [{
-                            required: true, message: 'Please confirm your password!',
-                        }, {
-                            validator: this.checkPassword,
-                        }],
-                    })(
-                        <Input type="password" onBlur={this.handleConfirmBlur} />
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label={(
-                        <span>
-              Nickname&nbsp;
-                            <Tooltip title="What do you want other to call you?">
-                <Icon type="question-circle-o" />
+            ]
+          }) (
+            <Input type="password" onBlur={this.handleConfirmBlur.bind(this)}   prefix={<Icon type="lock" />}  placeholder="请确认你的密码"/>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label={(
+            <span>
+              昵称
+              <Tooltip title="希望其他人称呼你什么">
+                <Icon type="question-circle-o"  style={{marginLeft:4}}/>
               </Tooltip>
-            </span>
-                    )}
-                    hasFeedback
-                >
-                    {getFieldDecorator('nickname', {
-                        rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
-                    })(
-                        <Input />
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="Phone Number"
-                >
-                    {getFieldDecorator('phone', {
-                        rules: [{ required: true, message: 'Please input your phone number!' }],
-                    })(
-                        <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
-                    )}
-                </FormItem>
-                <FormItem
-                    {...formItemLayout}
-                    label="Captcha"
-                    extra="We must make sure that your are a human."
-                >
-                    <Row gutter={8}>
-                        <Col span={12}>
-                            {getFieldDecorator('captcha', {
-                                rules: [{ required: true, message: 'Please input the captcha you got!' }],
-                            })(
-                                <Input size="large" />
-                            )}
-                        </Col>
-                        <Col span={12}>
-                            <Button size="large">Get captcha</Button>
-                        </Col>
-                    </Row>
-                </FormItem>
-                <FormItem {...tailFormItemLayout} style={{ marginBottom: 8 }}>
-                    {getFieldDecorator('agreement', {
-                        valuePropName: 'checked',
-                    })(
-                        <Checkbox>I have read the <a href="">agreement</a></Checkbox>
-                    )}
-                </FormItem>
-                <FormItem {...tailFormItemLayout}>
-                    <Button type="primary" htmlType="submit">Register</Button>
-                </FormItem>
-            </Form>
-        );
-    }
+             </span>
+          )}
+          hasFeedback
+        >
+          {getFieldDecorator('nickname', {
+            rules: [{ required: true, message: '请输入你的用户名', whitespace: true }],
+          })(
+            <Input prefix={<Icon type="user"/>} placeholder="请输入你的用户名"/>
+          )}
+        </FormItem>
+
+
+        <FormItem {...tailFormItemLayout} style={{ marginBottom: 8 }}>
+          {getFieldDecorator('agreement', {
+            valuePropName: 'checked',
+            initialValue: true,
+            ruLes: [{
+              required:true, message:"请同意我们的协议"
+            }
+            ]
+          })(
+            <Checkbox >我同意 <a href="" >协议</a></Checkbox>
+          )}
+        </FormItem>
+        <FormItem {...tailFormItemLayout}>
+          <Button type="primary" htmlType="submit">注册</Button>
+        </FormItem>
+      </Form>
+
+    )
+  }
+
 }
 
 const Signup = Form.create()(RegistrationForm);
