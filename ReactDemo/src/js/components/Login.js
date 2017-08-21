@@ -10,6 +10,7 @@ const FormItem = Form.Item;
 class Login extends React.Component {
   constructor() {
     super();
+    console.log(this.props)
     this.state = {
       showAlert:false
     }

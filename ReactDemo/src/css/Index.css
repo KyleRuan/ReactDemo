@@ -43,3 +43,10 @@
 .login-form-button {
     width: 100%;
 }
+
+.signup-header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
