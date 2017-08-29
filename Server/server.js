@@ -20,7 +20,11 @@ var mongoose = require('mongoose');
 var expressSession = require('express-session');
 var mongoStore = require('connect-mongo')({session:expressSession});
 // require('./models/users_model');
-var conn =mongoose.connect('mongodb://localhost/imageSet');
+var conn =mongoose.connect('mongodb://localhost/ReactNews');
+
+conn.connection.on('connected', function () {
+  console.log('Mongoose connection open ');
+});
 mongoose.Promise = require('bluebird');
 // 保存session
 app.use(expressSession({
@@ -62,7 +66,6 @@ app.use(express.static( __dirname+'/ReactNews'));
 app.use('/static', express.static( __dirname+'/ReactNews'));
 
 app.get('/',function(req,res){
-  res.end('')
    console.log( path.join(__dirname, '/ReactNews'));
    res.render('index');
 })
