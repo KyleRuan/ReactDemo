@@ -2,9 +2,9 @@
  * Created by zhangxinyi on 17/8/17.
  */
 
-
 import React from 'react';
 import {Icon,Form, Input, Button, Checkbox,Alert} from 'antd';
+
 const FormItem = Form.Item;
 
 class Login extends React.Component {
@@ -12,7 +12,7 @@ class Login extends React.Component {
     super();
     console.log(this.props);
     this.state = {
-      showAlert:false
+      alertMessage:''
     }
   }
 
@@ -20,36 +20,49 @@ class Login extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
-        // 发送请求
-        if (values.password == "123" && values.userName == "123") {
-          this.props.bindingEvent({
-            isLogin: true,
-            username:values.userName
-          });
-        } else {
-          // 密码错误还是用户名错误
-          this.setState({
-            showAlert:true
-          })
-        }
-        //  成功
-        // 失败
+        fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(values)
+        }).then((respond) => {
+          return respond.json();
+        }).then( (data) => {
+           console.log(data);
+              if (data.code == 1) {
+                this.props.bindingEvent({
+                  isLogin: true,
+                  username:data.username
+                });
+              } else if(data.code == -1) {
+                  // 没有注册
+                this.setState( {
+                  alertMessage:data.message
+                });
+              } else  if (data.code = -2) {
+                //密码错误
+                this.setState( {
+                  alertMessage:data.message
+                });
+              }
+          }
+        );
       }
     });
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-    const alert = this.state.showAlert ?(
-      <Alert type="error" message="登录失败"/>
+    const alert = this.state.alertMessage.length >0 ?(
+      <Alert type="error" message={this.state.alertMessage}/>
     ):null;
     return(
       <Form onSubmit={this.handleSubmit.bind(this)} className="login-form">
         <FormItem>
-          {getFieldDecorator('userName', {
-            rules: [{ required: true, message: '请输入用户名' }],
+          {getFieldDecorator('email', {
+            rules: [{ required: true, message: '请输入你的邮箱' }],
           })(
-            <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
+            <Input prefix={<Icon type="mail" style={{ fontSize: 13 }} />} placeholder="email" />
           )}
         </FormItem>
         <FormItem>

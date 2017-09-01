@@ -14,6 +14,15 @@ class Header extends React.Component {
     }
   }
 
+  componentWillMount() {
+    if (this.props.router) {
+
+    }
+
+    console.log(this.props.router);
+  }
+
+
   handleMenuClick(e) {
     if (e.key == 'register' &&!this.state.isLogin) {
       // 弹出一个Modal

@@ -1,8 +1,7 @@
-import { Form, Input, Icon, Checkbox, Button ,Tooltip} from 'antd';
+import { Form, Input, Icon, Checkbox, Button ,Tooltip,message} from 'antd';
 const FormItem = Form.Item;
 import React from 'react';
-// import fetch from  'whatwg-fetch';
-import {BrowserRouter as Router} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 
 class RegistrationForm extends React.Component {
     constructor() {
@@ -16,9 +15,7 @@ class RegistrationForm extends React.Component {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err &&values.agreement) {
-                console.log('Received values of form: ', values);
-                //注册成功然后退回到前面去了
-
+              message.loading("正在注册中");
               fetch('/api/signup', {
                 method: 'POST',
                 headers: {
@@ -26,12 +23,43 @@ class RegistrationForm extends React.Component {
                 },
                 body: JSON.stringify(values)
               }).then((response) => {
-                console.log(response);
-              });
+                return response.json();
+              }).then(
+                (data) => {
+                  console.log(data);
+                  if (data.code == -1) {
+                    message.destroy();
+                    message.error(data.message,2);
+                  } else if (data.code == 1){
+                    message.destroy();
+                    message.success(data.message,1);
+                    // 自动登录 设置状态到首页
+                    console.log(data);
+                    const  user = data.user;
+                    // email
+                  // :
+                  //   "464118236@qq.com"
+                  //   nickname
+                  //     :
+                  //     "1122"
+                  //   password
+                  //     :
+                  //     "111"
+                  //   rememberPWD
+                  //     :
+                  //     true
+                    this.props.match.params = {
+                      isLogin:true,
+                      username:user.username
+                    };
+                    this.props.history.push("/");
+                  }
+                }
+              );
 
-
-                const path = '/';
-                this.props.history.goBack();
+                //
+                // const path = '/';
+                // this.props.history.go('/');
 
             } else if(!values.agreement) {
                 console.log("必须同意协议");
@@ -169,4 +197,4 @@ class RegistrationForm extends React.Component {
 }
 
 const Signup = Form.create()(RegistrationForm);
-export default Signup;
+export default withRouter(Signup);

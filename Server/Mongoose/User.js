@@ -8,4 +8,7 @@ var UserSchema = new Schema({
   rememberPWD:{type:Boolean}
 });
 
+/*
+*   这里直接导出了model
+* */
 module.exports = mongoose.model('User',UserSchema);
