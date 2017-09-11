@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha test",
     "dev": "cd app &&nohup npm run dev && cd ..&& node server.js",
-    "app": "nohup mongod --dbpath= /Users/kyle/Documents/reactDemo/Server/DBCache &&nohup node server.js & cd ReactNews & webpack --watch "
+    "app": "nohup mongod --dbpath=/Users/kyle/Documents/reactDemo/Server/DBCache &&nohup node server.js & cd ReactNews & webpack --watch "
   },
   "author": "kyle ruan",
   "license": "MIT",

@@ -1045,3 +1045,5 @@ MongoError: failed to connect to server [localhost:27017] on first connect [Mong
     at emitErrorNT (net.js:1271:8)
     at _combinedTickCallback (internal/process/next_tick.js:74:11)
     at process._tickCallback (internal/process/next_tick.js:98:9)
+Error parsing command line: the argument for option '--dbpath' should follow immediately after the equal sign
+try 'mongod --help' for more information
